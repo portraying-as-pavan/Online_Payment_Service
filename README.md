@@ -19,8 +19,7 @@ Here we have two microservices, Bank-Wallet which deals with transactions,bills 
    <li>Login using the username and password</li>
     <li>Create a Bank Account and create a wallet linked to it</li>
    <li>Make transactions and bill payments</li>
-   <ul>
-     
-     <h3> if the api gives any error code or null values, please do check the terminal for the Custom Exception Raised
+  </ul>
+   <h3> if the api gives any error code or null values, please do check the terminal for the Custom Exception Raised</h3>
   
   
