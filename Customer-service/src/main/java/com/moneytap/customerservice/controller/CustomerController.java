@@ -2,14 +2,17 @@ package com.moneytap.customerservice.controller;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.moneytap.customerservice.exception.CustomerNotFoundException;
 import com.moneytap.customerservice.exception.UserNotFoundException;
 import com.moneytap.customerservice.model.Customer;
 import com.moneytap.customerservice.model.JwtRequest;
 import com.moneytap.customerservice.model.JwtResponse;
+import com.moneytap.customerservice.model.Wallet;
 import com.moneytap.customerservice.service.CustomerService;
 import com.moneytap.customerservice.service.JwtResponseService;
 import com.moneytap.customerservice.service.UserService;
+import com.moneytap.customerservice.service.WalletService;
 import com.moneytap.customerservice.utility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +26,16 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private WalletService walletService;
 
-    @PostMapping(value = "/add")
-    public void addCustomer(@RequestBody Customer customer){
+    @PostMapping(value = "/add/{customerName}/{mobileNumber}/{password}/{walletBalance}")
+    public void addCustomer(@PathVariable String customerName, @PathVariable String mobileNumber,
+                            @PathVariable String password, @PathVariable int walletBalance){
       //  String walletUrl="http:localhost:8081/wallet/add";
-
+        Wallet wallet=new Wallet(walletBalance);
+        Customer customer=new Customer(customerName,mobileNumber,password,wallet);
+            walletService.addWallet(wallet);
         customerService.addCustomer(customer);
     }
     @GetMapping(value = "/show/{customerId}")
@@ -63,6 +71,7 @@ public class CustomerController {
 
 
     @PostMapping("/authenticate")
+    @JsonIgnore
     public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception{
 
         try {

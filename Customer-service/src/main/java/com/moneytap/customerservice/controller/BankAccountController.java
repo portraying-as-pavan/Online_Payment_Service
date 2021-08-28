@@ -4,8 +4,10 @@ package com.moneytap.customerservice.controller;
 import com.moneytap.customerservice.exception.CustomerNotFoundException;
 import com.moneytap.customerservice.exception.UserNotFoundException;
 import com.moneytap.customerservice.model.BankAccount;
+import com.moneytap.customerservice.model.Customer;
 import com.moneytap.customerservice.model.Wallet;
 import com.moneytap.customerservice.service.BankAccountService;
+import com.moneytap.customerservice.service.CustomerService;
 import com.moneytap.customerservice.service.JwtResponseService;
 import com.moneytap.customerservice.service.WalletService;
 import com.moneytap.customerservice.utility.JWTUtility;
@@ -24,6 +26,8 @@ public class BankAccountController {
     @Autowired
     private WalletService walletService;
     @Autowired
+    private CustomerService customerService;
+    @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
@@ -32,19 +36,24 @@ public class BankAccountController {
     @Autowired
     private JwtResponseService jwtResponseService;
 
-    @PostMapping(value = "/add/{bankName}/{ifsc}/{bankBalance}/{walletBalance}")
+    @PostMapping(value = "/add/{bankName}/{ifsc}/{bankBalance}/{customerId}")
     public void createAccount(@PathVariable String bankName, @PathVariable String ifsc,
                               @PathVariable int bankBalance,
-                              @PathVariable int walletBalance, @RequestHeader("Authorization") String token) throws UserNotFoundException {
+                              @PathVariable int customerId, @RequestHeader("Authorization") String token) throws UserNotFoundException, CustomerNotFoundException {
 
         if(jwtResponseService.checkTokenExists(token)) {
-
+/*
             String walletUrl = "http://transaction-service/wallet/add/";
             Wallet wallet = new Wallet(walletBalance);
             //  walletService.addWallet(wallet);
             restTemplate.postForObject(walletUrl + walletBalance, wallet, Wallet.class);
+            */
             BankAccount bankAccount = new BankAccount(ifsc, bankName, bankBalance);
-            bankAccount.setWallet(wallet);
+
+                Wallet wallet = customerService.getCustomerById(customerId).getWallet();
+
+                bankAccount.setWallet(wallet);
+
 
             bankAccountService.addBankAccount(bankAccount);
         }

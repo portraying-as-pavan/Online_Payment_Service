@@ -100,7 +100,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
             "/configuration/security",
             "/swagger-ui.html/**",
             "/webjars/**",
-            "/customer/authenticate"
+            "/customer/authenticate",
+            "/customer/add/{customerName}/{mobileNumber}/{password}/{walletBalance}",
+            "/wallet/add/{id}"
     };
 
     @Override
