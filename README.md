@@ -7,10 +7,11 @@ Here we have two microservices, Bank-Wallet which deals with transactions,bills 
   <h5>Running the Application</h5>
 <ul>  
   <li>Download the files and run maven to download the neccessary dependencies</li>
-  <li>Bank-Waller runs on port 8082</li>
+  <li>Bank-Wallet runs on port 8082</li>
   <li>Customer-service runs on port 8081</li>
   <li>eureka server runs on port 8091</li>
   <li>open the swagger-ui.html on the required port</li>
+  <li> for example localhost:8082/swagger-ui.html to see all controllers of Bank-Wallet</li>
 </ul>
  <h5>Making Payments</h5>
  <ul>
